@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const intencjePath = path.join(__dirname, '..', 'src', 'assets', 'intencje');
 const ogloszeniaPath = path.join(__dirname, '..', 'src', 'assets', 'ogloszenia');
+const dodatkoweOgloszeniaPath = path.join(__dirname, '..', 'src', 'assets', 'dodatkowe_ogloszenia');
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 const redirectUri = 'urn:ietf:wg:oauth:2.0:oob';
@@ -16,6 +17,7 @@ oAuth2Client.setCredentials({
 
 saveFilenames(intencjePath, path.join(__dirname, '..', 'src', 'assets', 'intencje.json'));
 saveFilenames(ogloszeniaPath, path.join(__dirname, '..', 'src', 'assets', 'ogloszenia.json'));
+saveFilenames(dodatkoweOgloszeniaPath, path.join(__dirname, '..', 'src', 'assets', 'dodatkowe_ogloszenia.json'));
 savePhotos(path.join(__dirname, '..', 'src', 'assets', 'zdjecia.json'));
 
 function saveFilenames(scanPath, savePath) {
