@@ -17,6 +17,7 @@ export class OgloszeniaWybraneComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private sub: Subscription | undefined;
   public buffer: ArrayBuffer | undefined;
+  public dodatkowyBuffer: ArrayBuffer | undefined;
   public title: string = '';
 
   public content: string = '';
@@ -29,6 +30,13 @@ export class OgloszeniaWybraneComponent implements OnInit, OnDestroy {
         })
         .subscribe((buffer) => {
           that.buffer = buffer;
+        });
+      that.httpClient
+        .get(`assets/dodatkowe_ogloszenia/${params['date']}.html`, {
+          responseType: 'arraybuffer',
+        })
+        .subscribe((buffer) => {
+          that.dodatkowyBuffer = buffer;
         });
       that.title = `Ogłoszenia ${formatDate(params['date'])}`;
     });

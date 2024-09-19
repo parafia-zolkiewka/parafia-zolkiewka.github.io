@@ -21,6 +21,7 @@ function salt() {
 })
 export class AdminPanelComponent implements OnInit {
   private announcementsFile: File | undefined;
+  private additionalAnnouncementsFile: File | undefined;
   private intentionsFile: File | undefined;
   private httpClient = inject(HttpClient);
   private notification = inject(NotificationService);
@@ -80,6 +81,22 @@ export class AdminPanelComponent implements OnInit {
             this.notification.addNotification({
               type: 'error',
               message: 'Błąd podczas aktualizacji pliku ogłoszeń',
+            });
+          });
+      }
+      if (this.additionalAnnouncementsFile) {
+        await this.fetchAndUpdateFile(this.additionalAnnouncementsFile, 'dodatkowe_ogloszenia')
+          .then(() => {
+            this.notification.addNotification({
+              type: 'success',
+              message: 'Dodatkowe ogłoszenia zostały zaktualizowane',
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+            this.notification.addNotification({
+              type: 'error',
+              message: 'Błąd podczas aktualizacji pliku dodatkowych ogłoszeń',
             });
           });
       }
@@ -255,6 +272,10 @@ export class AdminPanelComponent implements OnInit {
 
   onAnnouncementsFileChange($event: Event) {
     this.announcementsFile = ($event.target as HTMLInputElement).files?.[0];
+  }
+
+  onAdditonalAnnouncementsFileChange($event: Event) {
+    this.additionalAnnouncementsFile = ($event.target as HTMLInputElement).files?.[0];
   }
 
   onIntentionsFileChange($event: Event) {

@@ -17,6 +17,7 @@ export class OgloszeniaComponent implements OnInit {
 
   public ogloszenia: string[] = [];
   public buffer: ArrayBuffer | undefined;
+  public dodatkowyBuffer: ArrayBuffer | undefined;
   public title: string = '';
 
   ngOnInit(): void {
@@ -35,6 +36,14 @@ export class OgloszeniaComponent implements OnInit {
         })
         .subscribe((buffer) => {
           that.buffer = buffer;
+        });
+
+      that.httpClient
+        .get(`assets/dodatkowe_ogloszenia/${date}.html`, {
+          responseType: 'arraybuffer',
+        })
+        .subscribe((buffer) => {
+          that.dodatkowyBuffer = buffer;
         });
     });
   }
