@@ -1,22 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { Folder } from './folder';
-import { FolderComponent } from './folder/folder.component';
+import { ImagePreviewComponent } from './image-preview/image-preview.component';
 
 @Component({
   selector: 'app-galeria',
   standalone: true,
-  imports: [RouterModule, FolderComponent, MatIconModule],
+  imports: [
+    RouterModule,
+    ImagePreviewComponent,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    ImagePreviewComponent,
+  ],
   templateUrl: './galeria.component.html',
-  styleUrl: './galeria.component.css',
 })
 export class GaleriaComponent implements OnInit {
   private httpClient = inject(HttpClient);
 
-  public folders: Folder[] = [];
-  public selectedFolder: Folder | undefined;
+  public imageIds: string[] = [];
+  public selectedImage: string | undefined;
+  public showImagePreview: boolean = false;
+  public currentIndex: number = 0;
 
   ngOnInit(): void {
     this.httpClient
@@ -24,11 +32,28 @@ export class GaleriaComponent implements OnInit {
         responseType: 'text',
       })
       .subscribe((data) => {
-        this.folders = JSON.parse(data);
+        const folders: Folder[] = JSON.parse(data);
+        this.imageIds = folders.reduce<string[]>((acc, folder) => {
+          return [...acc, ...folder.fileIds];
+        }, []);
+        this.currentIndex = 0;
       });
   }
 
-  selectFolder(folder: Folder | undefined) {
-    this.selectedFolder = folder;
+  selectImage(imageIndex: number) {
+    this.showImagePreview = true;
+    this.currentIndex = imageIndex;
+  }
+
+  moveLeft() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
+  }
+
+  moveRight() {
+    if (this.currentIndex < this.imageIds.length - 1) {
+      this.currentIndex++;
+    }
   }
 }
