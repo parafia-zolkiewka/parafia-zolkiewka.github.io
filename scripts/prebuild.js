@@ -62,23 +62,39 @@ async function getFolders(auth) {
     const drive = google.drive({ version: 'v3', auth });
 
     try {
-        const foldersResponse = await drive.files.list({
-            fields: 'files(id, name, mimeType)',
-            q: "mimeType = 'application/vnd.google-apps.folder' and trashed=false and '" + galleryFolderId + "' in parents"
-        });
+        let folderPageToken = null;
 
-        const folders = foldersResponse.data.files;
-
-        for (const folder of folders) {
-            const filesResponse = await drive.files.list({
-                fields: 'files(id, name, mimeType)',
-                q: "mimeType = 'image/jpeg' and trashed=false and '" + folder.id + "' in parents"
+        do {
+            const foldersResponse = await drive.files.list({
+                fields: 'nextPageToken, files(id, name, mimeType)',
+                q: "mimeType = 'application/vnd.google-apps.folder' and trashed=false and '" + galleryFolderId + "' in parents",
+                pageSize: 1000,
+                pageToken: folderPageToken
             });
 
-            const files = filesResponse.data.files;
-            const fileIds = files.map(file => file.id);
-            galleryFolders.push(new Folder(folder.name, folder.id, fileIds));
-        }
+            const folders = foldersResponse.data.files;
+
+            for (const folder of folders) {
+                let fileIds = [];
+                let filePageToken = null;
+
+                do {
+                    const filesResponse = await drive.files.list({
+                        fields: 'nextPageToken, files(id, name, mimeType)',
+                        q: "mimeType = 'image/jpeg' and trashed=false and '" + folder.id + "' in parents",
+                        pageSize: 1000,
+                        pageToken: filePageToken
+                    });
+
+                    const files = filesResponse.data.files;
+                    fileIds = files.map(file => file.id);
+                    filePageToken = filesResponse.data.nextPageToken;
+                } while (filePageToken);
+
+                galleryFolders.push(new Folder(folder.name, folder.id, fileIds));
+            }
+            folderPageToken = foldersResponse.data.nextPageToken;
+        } while (folderPageToken);
     } catch (error) {
         console.error('The API returned an error:', error);
         throw error;
