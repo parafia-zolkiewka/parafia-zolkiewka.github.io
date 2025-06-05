@@ -45,15 +45,26 @@
 </main>
 
 <footer class="bg-neutral-300">
-  <div class="container max-w-screen-lg mx-auto p-4 text-center">
-    <p class="font-semibold">
+  <div class="container max-w-screen-lg mx-auto p-4">
+    <p class="font-semibold text-center mb-4">
       Parafia rzymskokatolicka pw. św. Wawrzyńca w Żółkiewce, Średnia Wieś 54,
       22-335 Żółkiewka
     </p>
-    <p>Telefon parafialny: 500 097 562</p>
-    <p>Kościelny: Zbigniew Koprucha - 604 198 804</p>
-    <p>Organista: Adam Kalinowski - 603 248 078</p>
-    <p>Numer konta bankowego: 78 8200 1050 2006 5000 1980 0001</p>
+
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="text-center flex-1">
+        <p>Telefon parafialny: 500 097 562</p>
+        <p>Kościelny: Zbigniew Koprucha - 604 198 804</p>
+        <p>Organista: Adam Kalinowski - 603 248 078</p>
+        <p>Numer konta bankowego: 78 8200 1050 2006 5000 1980 0001</p>
+      </div>
+
+      <div class="text-center flex-1">
+        <a routerLink="standardy-ochrony-maloletnich" class="hover:underline text-center" (click)="closeMenu()">
+          <p class="italic">Standardy Ochrony Małoletnich</p>
+        </a>
+      </div>
+    </div>
   </div>
 </footer>
 

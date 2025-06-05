@@ -6,6 +6,7 @@ import { IntencjeWybraneComponent } from './intencje/intencje.wybrane/intencje.w
 import { NabozenstwaComponent } from './nabozenstwa/nabozenstwa.component';
 import { OgloszeniaComponent } from './ogloszenia/ogloszenia.component';
 import { OgloszeniaWybraneComponent } from './ogloszenia/ogloszenia.wybrane/ogloszenia.wybrane.component';
+import { SomComponent } from './som/som.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -22,5 +23,6 @@ export const routes: Routes = [
   { path: 'ogloszenia/:date', component: OgloszeniaWybraneComponent },
   { path: 'galeria', component: GaleriaComponent },
   { path: 'nabozenstwa', component: NabozenstwaComponent },
+  { path: 'standardy-ochrony-maloletnich', component: SomComponent },
   { path: '**', redirectTo: '' },
 ];
