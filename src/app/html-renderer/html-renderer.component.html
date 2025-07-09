@@ -1,1 +1,4 @@
-<div style="max-width: 717px" [innerHTML]="content"></div>
+<div style="max-width: 750px; width: 100%; overflow: hidden;">
+  <iframe #iframeEl *ngIf="iframeSrc" [src]="iframeSrc" width="100%" style="border: none;"
+    (load)="resizeIframe()"></iframe>
+</div>
