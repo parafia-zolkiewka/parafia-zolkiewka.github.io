@@ -28,7 +28,12 @@ export class OgloszeniaComponent implements OnInit {
         dayjs(date).isBefore(dayjs())
       );
       that.ogloszenia = ogloszenia;
-      that.title = `Ogłoszenia ${dayjs(date).format('D MMMM YYYY')}`;
+      
+      if (dayjs(date).isBefore("2025-06-30")) {
+        that.title = `Ogłoszenia ${dayjs(date).format('D MMMM YYYY')}`;
+      } else {
+        that.title = '';
+      }
 
       that.httpClient
         .get(`assets/ogloszenia/${date}.html`, {

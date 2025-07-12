@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import dayjs from 'dayjs';
 import { Subscription } from 'rxjs';
 import { HtmlRendererComponent } from '../../html-renderer/html-renderer.component';
 import { formatDate } from '../../utils';
@@ -24,7 +25,13 @@ export class IntencjeWybraneComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const that = this;
     that.sub = that.route.params.subscribe((params) => {
-      that.title = `Intencje ${formatDate(params['date'])}`;
+      
+      if (dayjs(params['date']).isBefore("2025-06-30")) {
+        that.title = `Intencje ${formatDate(params['date'])}`;
+      } else {
+        that.title = '';
+      }
+
       that.httpClient
         .get(`assets/intencje/${params['date']}.html`, {
           responseType: 'arraybuffer',

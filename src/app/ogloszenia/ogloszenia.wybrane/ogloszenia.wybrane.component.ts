@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import dayjs from 'dayjs';
 import { Subscription } from 'rxjs';
 import { HtmlRendererComponent } from '../../html-renderer/html-renderer.component';
 import { formatDate } from '../../utils';
@@ -38,7 +39,12 @@ export class OgloszeniaWybraneComponent implements OnInit, OnDestroy {
         .subscribe((buffer) => {
           that.dodatkowyBuffer = buffer;
         });
-      that.title = `Ogłoszenia ${formatDate(params['date'])}`;
+      
+      if (dayjs(params['date']).isBefore("2025-06-30")) {
+        that.title = `Ogłoszenia ${formatDate(params['date'])}`;
+      } else {
+        that.title = '';
+      }
     });
   }
 

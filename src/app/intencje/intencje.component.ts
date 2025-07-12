@@ -26,7 +26,12 @@ export class IntencjeComponent implements OnInit {
         dayjs(date).isBefore(dayjs())
       );
       that.intencje = intencje;
-      that.title = `Intencje ${formatDate(date)}`;
+
+      if (dayjs(date).isBefore("2025-06-30")) {
+        that.title = `Intencje ${formatDate(date)}`;
+      } else {
+        that.title = '';
+      }
 
       that.httpClient
         .get(`assets/intencje/${date}.html`, {
